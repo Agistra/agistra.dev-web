@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Page not found — agistra.dev" description="The page you were looking for doesn't exist." noindex>
+	<div class="container not-found">
+		<p class="not-found__code" aria-hidden="true">404</p>
+		<h1 class="not-found__title">Page not found</h1>
+		<p class="not-found__desc">The page you were looking for doesn't exist or has been moved.</p>
+		<div class="not-found__links">
+			<a href={base} class="btn btn--primary">Go home</a>
+			<a href={`${base}docs/`} class="btn btn--secondary">Read the docs</a>
+		</div>
+	</div>
+
+	<style>
+		.not-found {
+			padding-block: var(--space-24);
+			text-align: center;
+		}
+
+		.not-found__code {
+			font-family: var(--font-mono);
+			font-size: 6rem;
+			font-weight: 700;
+			color: var(--color-border);
+			line-height: 1;
+			margin-bottom: var(--space-4);
+		}
+
+		.not-found__title {
+			font-size: var(--text-3xl);
+			margin-bottom: var(--space-3);
+		}
+
+		.not-found__desc {
+			color: var(--color-text-muted);
+			margin-bottom: var(--space-8);
+		}
+
+		.not-found__links {
+			display: flex;
+			gap: var(--space-4);
+			justify-content: center;
+			flex-wrap: wrap;
+		}
+	</style>
+</Layout>
