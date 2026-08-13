@@ -1,0 +1,145 @@
+---
+import { SITE } from '../../data/site';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<section class="hero">
+	<div class="container hero__inner">
+		<p class="hero__eyebrow">Free · Open source · Self-hosted</p>
+		<h1 class="hero__headline">Become a Team Lead of your<br />AI Engineering Team.</h1>
+		<p class="hero__subheadline">Architect, Builder, Tester, Router.</p>
+
+		<div class="hero__install">
+			<div class="hero__install-bar">
+				<span class="hero__install-dot"></span>
+				<span class="hero__install-dot"></span>
+				<span class="hero__install-dot"></span>
+				<span class="hero__install-label">install.sh</span>
+			</div>
+			<pre class="hero__install-code"><code>
+{SITE.installCommand.map((line) => <span class="hero__install-line">{line}</span>)}
+</code></pre>
+		</div>
+
+		<div class="hero__ctas">
+			<a href={`${base}docs/`} class="btn btn--primary">Run it now</a>
+			<a
+				href={SITE.github}
+				class="btn btn--secondary"
+				target="_blank"
+				rel="noopener noreferrer">View source ↗</a
+			>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		padding: var(--space-24) 0 var(--space-16);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.hero__inner {
+		max-width: var(--content-width);
+		position: relative;
+	}
+
+	.hero__inner::before {
+		content: '';
+		position: absolute;
+		inset: -20% -15%;
+		background: radial-gradient(
+			ellipse 55% 45% at 20% 20%,
+			rgba(255, 122, 51, 0.14),
+			transparent 70%
+		);
+		z-index: -1;
+		pointer-events: none;
+	}
+
+	.hero__eyebrow {
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-accent);
+		margin-bottom: var(--space-6);
+	}
+
+	.hero__headline {
+		font-size: clamp(2.25rem, 6vw, var(--text-6xl));
+		letter-spacing: -0.02em;
+		margin-bottom: var(--space-4);
+	}
+
+	.hero__subheadline {
+		font-family: var(--font-mono);
+		font-size: var(--text-lg);
+		color: var(--color-text-muted);
+		margin-bottom: var(--space-8);
+	}
+
+	.hero__install {
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		overflow: hidden;
+		margin-bottom: var(--space-8);
+		max-width: 560px;
+	}
+
+	.hero__install-bar {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+		padding: var(--space-3) var(--space-4);
+		background: var(--color-surface-raised);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.hero__install-dot {
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: var(--color-border);
+	}
+
+	.hero__install-label {
+		margin-left: var(--space-2);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		color: var(--color-text-muted);
+	}
+
+	.hero__install-code {
+		padding: var(--space-5) var(--space-5);
+		font-size: var(--text-sm);
+		line-height: 1.7;
+		color: var(--color-text);
+		white-space: pre-wrap;
+		overflow-x: auto;
+	}
+
+	.hero__install-line {
+		display: block;
+	}
+
+	.hero__install-line::before {
+		content: '$ ';
+		color: var(--color-accent);
+	}
+
+	.hero__ctas {
+		display: flex;
+		gap: var(--space-4);
+		flex-wrap: wrap;
+	}
+
+	@media (max-width: 640px) {
+		.hero {
+			padding: var(--space-16) 0 var(--space-12);
+		}
+	}
+</style>

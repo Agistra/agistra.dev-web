@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://agistra.github.io/agistra.dev-web/sitemap-index.xml

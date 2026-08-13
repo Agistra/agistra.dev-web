@@ -1,0 +1,74 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const entries = await getCollection('docs');
+	return entries.map((entry) => ({
+		params: { slug: entry.slug },
+		props: { entry },
+	}));
+}
+
+interface Props {
+	entry: CollectionEntry<'docs'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Layout title={`${entry.data.title} — Docs — agistra.dev`} description={entry.data.description}>
+	<article class="container doc">
+		<h1 class="doc__title">{entry.data.title}</h1>
+		<div class="doc__content">
+			<Content />
+		</div>
+	</article>
+
+	<style>
+		.doc {
+			max-width: var(--content-width);
+			padding-block: var(--space-16);
+		}
+
+		.doc__title {
+			font-size: var(--text-3xl);
+			margin-bottom: var(--space-6);
+		}
+
+		.doc__content {
+			color: var(--color-text);
+			line-height: 1.75;
+		}
+
+		.doc__content :global(p) {
+			margin-bottom: var(--space-4);
+		}
+
+		.doc__content :global(pre) {
+			background: var(--color-surface);
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius);
+			padding: var(--space-4);
+			overflow-x: auto;
+			margin-bottom: var(--space-4);
+		}
+
+		.doc__content :global(code) {
+			background: var(--color-surface);
+			padding: 0.1em 0.4em;
+			border-radius: var(--radius-sm);
+			font-size: 0.9em;
+		}
+
+		.doc__content :global(pre code) {
+			background: none;
+			padding: 0;
+		}
+
+		.doc__content :global(a) {
+			color: var(--color-accent);
+		}
+	</style>
+</Layout>

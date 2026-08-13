@@ -1,0 +1,116 @@
+---
+import { ROSTER } from '../../data/site';
+
+const roleClass: Record<string, string> = {
+	Architect: 'roster-card--architect',
+	Builder: 'roster-card--builder',
+	Tester: 'roster-card--tester',
+	Router: 'roster-card--router',
+};
+---
+
+<section class="roster" aria-labelledby="roster-heading">
+	<div class="container">
+		<h2 id="roster-heading" class="roster__heading">Your team, on every ticket.</h2>
+		<p class="roster__intro">
+			Four agents, four jobs. Each one runs its own lane of the ticket lifecycle — no single
+			agent that writes the code, tests the code, and grades its own homework.
+		</p>
+
+		<ul class="roster__grid">
+			{
+				ROSTER.map((member) => (
+					<li class={`roster-card ${roleClass[member.name]}`}>
+						<span class="roster-card__emoji" aria-hidden="true">
+							{member.emoji}
+						</span>
+						<h3 class="roster-card__name">{member.name}</h3>
+						<p class="roster-card__role">{member.role}</p>
+						<p class="roster-card__tagline">"{member.tagline}"</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.roster {
+		padding-block: var(--space-16);
+	}
+
+	.roster__heading {
+		font-size: var(--text-3xl);
+		margin-bottom: var(--space-3);
+	}
+
+	.roster__intro {
+		color: var(--color-text-muted);
+		max-width: 640px;
+		margin-bottom: var(--space-12);
+	}
+
+	.roster__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: var(--space-4);
+		list-style: none;
+	}
+
+	.roster-card {
+		--role-color: var(--color-accent);
+		border: 1px solid var(--color-border);
+		border-top: 3px solid var(--role-color);
+		border-radius: var(--radius);
+		background: var(--color-surface);
+		padding: var(--space-6);
+		transition:
+			transform 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+		.roster-card:hover {
+			transform: translateY(-3px);
+		}
+	}
+
+	.roster-card--architect {
+		--role-color: var(--role-architect);
+	}
+
+	.roster-card--builder {
+		--role-color: var(--role-builder);
+	}
+
+	.roster-card--tester {
+		--role-color: var(--role-tester);
+	}
+
+	.roster-card--router {
+		--role-color: var(--role-router);
+	}
+
+	.roster-card__emoji {
+		font-size: var(--text-2xl);
+		display: inline-block;
+		margin-bottom: var(--space-3);
+	}
+
+	.roster-card__name {
+		font-size: var(--text-lg);
+		margin-bottom: var(--space-1);
+	}
+
+	.roster-card__role {
+		font-size: var(--text-xs);
+		color: var(--color-text-muted);
+		margin-bottom: var(--space-4);
+	}
+
+	.roster-card__tagline {
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+		color: var(--role-color);
+	}
+</style>

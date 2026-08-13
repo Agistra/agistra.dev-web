@@ -1,0 +1,44 @@
+---
+import { SITE } from '../data/site';
+
+const year = new Date().getFullYear();
+const base = import.meta.env.BASE_URL;
+---
+
+<div class="footer">
+	<p class="footer__line">
+		© {year} Agistra ·
+		<a href={SITE.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+		·
+		<a href={`${base}docs/`}>Docs</a>
+	</p>
+	<p class="footer__line footer__line--muted">
+		Built with Agistra's own ticket workflow — Architect, Builder, Tester, Router.
+	</p>
+</div>
+
+<style>
+	.footer {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+		font-size: var(--text-sm);
+		color: var(--color-text-muted);
+	}
+
+	.footer__line a {
+		color: var(--color-text-muted);
+		text-decoration: underline;
+		text-decoration-color: var(--color-border);
+		text-underline-offset: 2px;
+	}
+
+	.footer__line a:hover {
+		color: var(--color-accent);
+	}
+
+	.footer__line--muted {
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+	}
+</style>
