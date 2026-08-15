@@ -1,0 +1,62 @@
+---
+title: "Quickstart"
+description: "Clone the free Agistra Dev hub and get your first project running."
+order: 0
+---
+
+import ToolTabs from '../../components/ToolTabs';
+
+Agistra Dev is a free, open-source AI agent team — Architect, Builder, Tester, and Router —
+that plan, build, test, and coordinate work on your projects, with shared memory and a live
+task queue. This page covers the three steps to get it running locally. For everything else
+(full CLI reference, task file format, agent memory), see the
+[project README](https://github.com/vsetchinfc/agistra.dev#readme).
+
+## 1. Clone the hub
+
+```bash
+git clone https://github.com/vsetchinfc/agistra.dev.git my-hub
+cd my-hub
+```
+
+## 2. Open the hub in your tool
+
+Agistra ships agent definitions for Claude Code, Cursor, GitHub Copilot, and Codex out of the
+box — pick whichever you already use. Memory files and skills are shared and model-agnostic,
+so switching tools later carries your context with you. Open the hub in your tool, then address
+an agent by name, pointing it at its own profile:
+
+<ToolTabs client:load />
+
+## 3. Add your first project
+
+Every time you add a new project, run `scan` on it — it's added to `projects/` and a first
+batch of task files is generated automatically:
+
+```bash
+npm run scan <my-project>
+```
+
+The recommended layout is your project workspace folder next to the hub:
+
+```text
+my-hub/
+  projects/
+    my-project/
+      task-1_todo_my_first-task.md
+      task-2_todo_another-task.md
+/my-project/
+  src/
+  README.md
+```
+
+## Where to go next
+
+- [Full CLI reference](https://github.com/vsetchinfc/agistra.dev#cli-reference) — every
+  command, including `dispatch`, `advance`, and `launch`
+- [Task file format](https://github.com/vsetchinfc/agistra.dev#task-file-format) — the YAML
+  front matter and structure every task file follows
+- [Agent memory](https://github.com/vsetchinfc/agistra.dev#agent-memory) — how HOT/WARM/COLD
+  memory persists across sessions
+- [Project health scanner](https://github.com/vsetchinfc/agistra.dev#project-health-scanner) —
+  what `scan` measures and scores

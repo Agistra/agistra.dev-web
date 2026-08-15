@@ -1,6 +1,8 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import DocsPageActions from '../../components/DocsPageActions';
+import { TOOL_COMMANDS } from '../../data/quickstart';
 
 export async function getStaticPaths() {
 	const entries = await getCollection('docs');
@@ -16,11 +18,28 @@ interface Props {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+// "Copy Markdown" needs clean, plain Markdown — not the raw MDX source,
+// which contains the `import ToolTabs ...` statement and the live `<ToolTabs />`
+// component tag. Strip the import line and replace the component tag with a
+// plain-text rendering of the same per-tool commands (from the same
+// `TOOL_COMMANDS` data the live island renders from), so an AI assistant reading
+// the copied text gets the full real content, not a dead end.
+const toolCommandsMarkdown = TOOL_COMMANDS.map(
+	(tool) => `**${tool.label}**\n\n\`\`\`\n${tool.command}\n\`\`\``
+).join('\n\n');
+
+const cleanMarkdown = entry.body
+	.replace(/^import .+ from ['"].+['"];\s*$/m, '')
+	.replace(/<ToolTabs\s+client:load\s*\/>/, toolCommandsMarkdown)
+	.trim();
 ---
 
 <Layout title={`${entry.data.title} — Docs — agistra.dev`} description={entry.data.description}>
 	<article class="container doc">
 		<h1 class="doc__title">{entry.data.title}</h1>
+		<DocsPageActions client:load markdown={cleanMarkdown} pageUrl={pageUrl} />
 		<div class="doc__content">
 			<Content />
 		</div>
@@ -46,6 +65,21 @@ const { Content } = await entry.render();
 			margin-bottom: var(--space-4);
 		}
 
+		.doc__content :global(h2) {
+			font-size: var(--text-2xl);
+			margin-top: var(--space-12);
+			margin-bottom: var(--space-4);
+		}
+
+		.doc__content :global(h2:first-child) {
+			margin-top: 0;
+		}
+
+		.doc__content :global(ul) {
+			margin-bottom: var(--space-4);
+			padding-left: var(--space-6);
+		}
+
 		.doc__content :global(pre) {
 			background: var(--color-surface);
 			border: 1px solid var(--color-border);
@@ -68,6 +102,93 @@ const { Content } = await entry.render();
 		}
 
 		.doc__content :global(a) {
+			color: var(--color-accent);
+		}
+
+		/* Per-tool tab switcher */
+		:global(.tool-tabs) {
+			margin-bottom: var(--space-4);
+		}
+
+		:global(.tool-tabs__list) {
+			display: flex;
+			flex-wrap: wrap;
+			gap: var(--space-2);
+			margin-bottom: var(--space-3);
+		}
+
+		:global(.tool-tabs__tab) {
+			border: 1px solid var(--color-border);
+			background: var(--color-surface);
+			color: var(--color-text-muted);
+			border-radius: var(--radius-sm);
+			padding: var(--space-2) var(--space-4);
+			font-size: var(--text-sm);
+			font-weight: 500;
+		}
+
+		:global(.tool-tabs__tab.is-active) {
+			border-color: var(--color-accent);
+			color: var(--color-heading);
+			background: var(--color-accent-dim);
+		}
+
+		:global(.tool-tabs__panel .tool-tabs__code) {
+			margin-bottom: 0;
+		}
+
+		/* Copy Markdown / Open in AI control */
+		:global(.docs-actions) {
+			display: flex;
+			gap: var(--space-3);
+			margin-bottom: var(--space-8);
+		}
+
+		:global(.docs-actions__button) {
+			display: inline-flex;
+			align-items: center;
+			gap: var(--space-1);
+			border: 1px solid var(--color-border);
+			background: var(--color-surface);
+			color: var(--color-text);
+			border-radius: var(--radius-sm);
+			padding: var(--space-2) var(--space-4);
+			font-size: var(--text-sm);
+			font-weight: 500;
+		}
+
+		:global(.docs-actions__button:hover) {
+			border-color: var(--color-accent);
+		}
+
+		:global(.docs-actions__menu-wrap) {
+			position: relative;
+		}
+
+		:global(.docs-actions__menu) {
+			position: absolute;
+			top: calc(100% + var(--space-2));
+			left: 0;
+			z-index: 20;
+			display: flex;
+			flex-direction: column;
+			min-width: 180px;
+			background: var(--color-surface-raised);
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius);
+			padding: var(--space-2);
+		}
+
+		:global(.docs-actions__menu-item) {
+			padding: var(--space-2) var(--space-3);
+			border-radius: var(--radius-sm);
+			font-size: var(--text-sm);
+			text-decoration: none;
+			color: var(--color-text);
+		}
+
+		:global(.docs-actions__menu-item:hover) {
+			background: var(--color-surface);
 			color: var(--color-accent);
 		}
 	</style>
