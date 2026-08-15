@@ -5,17 +5,11 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-	// Deploying to the default GitHub Pages project-page URL for now
-	// (`https://agistra.github.io/agistra.dev-web/`). Custom-domain wiring for
-	// `agistra.dev` is a separate ticket (task_2) — when that lands, `site`/`base`
-	// move to the apex domain the same way `vladsetchin.me` did (CNAME + base kept).
-	site: 'https://agistra.github.io',
-	base: '/agistra.dev-web/',
-	// MDX (task_3): the `docs` collection needs to embed a live React island
-	// (the per-tool command tab switcher) inline with prose content — plain
-	// Markdown content collections can't interleave a component mid-flow, MDX
-	// is the standard Astro-official mechanism for that. Pinned to an exact
-	// version compatible with Astro ^4.16 (astrojs/mdx 4.x requires Astro 5).
+	// Custom domain wiring: `agistra.dev` resolves via CNAME to GitHub Pages.
+	// No base path needed for apex domain — everything serves from root.
+	site: 'https://agistra.dev',
+	// MDX lets the docs collection embed interactive React islands inline with prose.
+	// The pinned integration version remains compatible with Astro 4.
 	integrations: [react(), sitemap(), mdx()],
 	output: 'static',
 });

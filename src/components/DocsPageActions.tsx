@@ -15,7 +15,7 @@ function buildAiUrl(base: string, pageUrl: string): string {
 }
 
 /**
- * "Copy Markdown" / "Open in AI" control (AC7). Modeled on career-ops.org/docs's
+ * "Copy Markdown" / "Open in AI" control modeled on career-ops.org/docs's
  * page-actions dropdown: a Copy Markdown button plus an "Open in" menu that hands
  * the page URL through to ChatGPT/Claude's prompt-prefill `?q=` pattern so the
  * assistant fetches and reads the page itself, rather than relying on the raw

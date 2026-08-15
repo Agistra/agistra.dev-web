@@ -20,7 +20,7 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
-// "Copy Markdown" (AC7) needs clean, plain Markdown — not the raw MDX source,
+// "Copy Markdown" needs clean, plain Markdown — not the raw MDX source,
 // which contains the `import ToolTabs ...` statement and the live `<ToolTabs />`
 // component tag. Strip the import line and replace the component tag with a
 // plain-text rendering of the same per-tool commands (from the same
@@ -105,7 +105,7 @@ const cleanMarkdown = entry.body
 			color: var(--color-accent);
 		}
 
-		/* Per-tool tab switcher (ToolTabs island, AC6) */
+		/* Per-tool tab switcher */
 		:global(.tool-tabs) {
 			margin-bottom: var(--space-4);
 		}
@@ -137,7 +137,7 @@ const cleanMarkdown = entry.body
 			margin-bottom: 0;
 		}
 
-		/* Copy Markdown / Open in AI control (DocsPageActions island, AC7) */
+		/* Copy Markdown / Open in AI control */
 		:global(.docs-actions) {
 			display: flex;
 			gap: var(--space-3);

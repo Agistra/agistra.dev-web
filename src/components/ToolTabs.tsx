@@ -4,7 +4,7 @@ import { TOOL_COMMANDS } from '../data/quickstart';
 const TOOLS = TOOL_COMMANDS;
 
 /**
- * Per-tool command tab switcher (AC6). Modeled on career-ops.org/docs's Step 2
+ * Per-tool command tab switcher modeled on career-ops.org/docs's Step 2
  * pattern: a row of `role="tablist"` buttons, clicking one swaps the code block
  * below it. Plain React state + conditional render — no tab library.
  */
