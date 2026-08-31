@@ -23,6 +23,12 @@ const navLinks = [
 	{ href: `${base}docs/`, label: 'Docs' },
 	{ href: SITE.github, label: 'GitHub', external: true },
 ];
+
+// The handoff rail (see global.css token comment) is the homepage's
+// signature element — a page-length line threading through the four agent
+// role colors in lifecycle order. It reads as noise on utility pages (docs,
+// 404), so it only renders on the homepage.
+const isHome = Astro.url.pathname === base;
 ---
 
 <!doctype html>
@@ -33,7 +39,7 @@ const navLinks = [
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..600;1,9..144,500..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
 			rel="stylesheet"
 		/>
 		<link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
@@ -64,7 +70,17 @@ const navLinks = [
 			</nav>
 		</header>
 
-		<main id="main" style="flex: 1;">
+		<main id="main" class="site-main">
+			{
+				isHome && (
+					<div class="page-rail" aria-hidden="true">
+						<span class="page-rail__tick" style="--tick-color: var(--role-architect); --tick-pos: 6%" />
+						<span class="page-rail__tick" style="--tick-color: var(--role-builder); --tick-pos: 34%" />
+						<span class="page-rail__tick" style="--tick-color: var(--role-tester); --tick-pos: 62%" />
+						<span class="page-rail__tick" style="--tick-color: var(--role-router); --tick-pos: 90%" />
+					</div>
+				)
+			}
 			<slot />
 		</main>
 
@@ -79,7 +95,7 @@ const navLinks = [
 				position: sticky;
 				top: 0;
 				z-index: 50;
-				background: rgba(11, 13, 16, 0.85);
+				background: rgba(23, 19, 31, 0.85);
 				border-bottom: 1px solid var(--color-border);
 				backdrop-filter: blur(8px);
 				-webkit-backdrop-filter: blur(8px);
@@ -93,8 +109,8 @@ const navLinks = [
 			}
 
 			.nav__brand {
-				font-family: var(--font-display);
-				font-weight: 700;
+				font-family: var(--font-mono);
+				font-weight: 600;
 				font-size: var(--text-lg);
 				color: var(--color-heading);
 				text-decoration: none;
@@ -102,7 +118,7 @@ const navLinks = [
 			}
 
 			.nav__brand-dim {
-				color: var(--color-accent);
+				color: var(--color-nav);
 			}
 
 			.nav__brand:hover {
@@ -150,7 +166,7 @@ const navLinks = [
 			}
 
 			:global(.nav__link:hover) {
-				color: var(--color-accent);
+				color: var(--color-nav);
 			}
 
 			@media (max-width: 640px) {
@@ -183,6 +199,56 @@ const navLinks = [
 					max-height: 200px;
 					opacity: 1;
 					pointer-events: auto;
+				}
+			}
+
+			.site-main {
+				flex: 1;
+				position: relative;
+			}
+
+			/* Signature element: the handoff rail. A page-length vertical line in
+			   the left gutter that threads through the four agent role colors in
+			   lifecycle order (Architect -> Builder -> Tester -> Router) — a literal
+			   picture of the ticket handoff that is the product's actual mechanic,
+			   not a generic decorative accent. Homepage only (see isHome above);
+			   purely decorative, so it is hidden from the accessibility tree and
+			   ignores pointer events. Hidden below the tablet breakpoint, where the
+			   roster cards' own role-colored top borders already carry the same
+			   signal in the narrow column. */
+			.page-rail {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: clamp(0.5rem, 2vw, 2rem);
+				width: 2px;
+				background: linear-gradient(
+					to bottom,
+					var(--role-architect),
+					var(--role-builder),
+					var(--role-tester),
+					var(--role-router)
+				);
+				opacity: 0.55;
+				pointer-events: none;
+				z-index: 0;
+			}
+
+			.page-rail__tick {
+				position: absolute;
+				top: var(--tick-pos);
+				left: 50%;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				background: var(--tick-color);
+				transform: translate(-50%, -50%);
+				box-shadow: 0 0 0 4px var(--color-bg);
+			}
+
+			@media (max-width: 900px) {
+				.page-rail {
+					display: none;
 				}
 			}
 

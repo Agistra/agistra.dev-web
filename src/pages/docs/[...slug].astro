@@ -102,7 +102,7 @@ const cleanMarkdown = entry.body
 		}
 
 		.doc__content :global(a) {
-			color: var(--color-accent);
+			color: var(--color-nav);
 		}
 
 		/* Per-tool tab switcher */
@@ -128,7 +128,7 @@ const cleanMarkdown = entry.body
 		}
 
 		:global(.tool-tabs__tab.is-active) {
-			border-color: var(--color-accent);
+			border-color: var(--color-action);
 			color: var(--color-heading);
 			background: var(--color-accent-dim);
 		}
@@ -158,7 +158,18 @@ const cleanMarkdown = entry.body
 		}
 
 		:global(.docs-actions__button:hover) {
-			border-color: var(--color-accent);
+			border-color: var(--color-action);
+		}
+
+		/* Copy-to-clipboard visual states — Success/System-error per uix-lens */
+		:global(.docs-actions__button--success) {
+			border-color: var(--color-verify);
+			color: var(--color-verify);
+		}
+
+		:global(.docs-actions__button--error) {
+			border-color: var(--color-error);
+			color: var(--color-error);
 		}
 
 		:global(.docs-actions__menu-wrap) {
@@ -189,7 +200,7 @@ const cleanMarkdown = entry.body
 
 		:global(.docs-actions__menu-item:hover) {
 			background: var(--color-surface);
-			color: var(--color-accent);
+			color: var(--color-nav);
 		}
 	</style>
 </Layout>
