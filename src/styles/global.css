@@ -1,28 +1,68 @@
-/* Design tokens for agistra.dev-web */
+/* ==========================================================================
+   Design tokens for agistra.dev-web
+
+   Brand: agistra.dev is a free, open-source multi-agent hub — a human "Team
+   Lead" directs four AI agents (Architect, Builder, Tester, Router) through a
+   real ticket lifecycle. The palette makes that lifecycle visible: instead of
+   one accent color decorating a near-black page, the four agents' own real
+   role colors (already used on the roster cards) are elevated into the
+   site's primary accent system, each one reused for the UI function it fits
+   semantically — Architect (violet) for structural/external references,
+   Builder (amber) for primary actions, Tester (green) for verification and
+   proof, Router (blue) for navigation. Display type is a serif (Fraunces,
+   the human Team Lead's authored voice) paired with a monospace utility face
+   (JetBrains Mono, the agents' systematic voice — labels, status, code) and
+   a quiet sans body face (Inter) for reading text.
+
+   See the PR description for the full DESIGN.md-shaped plan (color table,
+   full type scale, layout concept, signature element).
+   ========================================================================== */
 
 :root {
-	/* Signal-amber accent — distinct from vladsetchin.me's terminal-green identity */
-	--color-accent: #ff7a33;
-	--color-accent-dim: rgba(255, 122, 51, 0.16);
+	/* ---- Color: Terminal Ink + 4 role hues (no single accent) ---- */
 
-	/* Dark graphite base */
-	--color-bg: #0b0d10;
-	--color-surface: #14171b;
-	--color-surface-raised: #191d22;
-	--color-border: rgba(255, 255, 255, 0.09);
-	--color-text: #e7e9ec;
-	/* Contrast verification: #9aa1ac on #0b0d10 = 7.4:1 (AAA for all text sizes) */
-	--color-text-muted: #9aa1ac;
-	--color-heading: #f5f6f8;
+	/* Base — a warm-tinted dark ink, not literal near-black graphite */
+	--color-bg: #17131f;
+	--color-surface: #211c2c;
+	--color-surface-raised: #2a2338;
+	--color-border: rgba(244, 238, 250, 0.1);
 
-	/* Per-role accents for the roster cards — grounded in the subject, not decoration */
+	/* Text — warm paper foreground, not cool grey */
+	--color-text: #f2eee8;
+	--color-text-muted: #ada4bb;
+	--color-heading: #faf7f2;
+
+	/* The four agent role colors — the site's real accent system.
+	   Contrast on --color-bg (#17131f), verified via WCAG relative-luminance
+	   formula: architect 7.18:1, builder 7.82:1, tester 9.42:1, router
+	   6.71:1 — all exceed AA (4.5:1) for text/UI use. */
 	--role-architect: #b98cff;
-	--role-builder: #ff7a33;
+	--role-builder: #ff8a4c;
 	--role-tester: #4fd18c;
 	--role-router: #5b9dff;
 
-	/* Type: Space Grotesk for display, Inter for body, JetBrains Mono for code/labels */
-	--font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+	/* Semantic reuse of the four role colors for site-wide UI functions —
+	   deliberately not one bolted-on "brand color": each function borrows the
+	   agent whose job matches it. */
+	--color-action: var(--role-builder); /* Builder: "ship it" -> primary CTAs, focus ring */
+	--color-nav: var(--role-router); /* Router: "route it" -> nav brand, nav link hover */
+	--color-verify: var(--role-tester); /* Tester: "verify it" -> proof/footnote accents */
+	--color-structure: var(--role-architect); /* Architect: "design it" -> external links, rules */
+
+	/* Kept as the generic accent alias for anything not yet role-mapped */
+	--color-accent: var(--color-action);
+	--color-accent-dim: rgba(255, 138, 76, 0.16);
+
+	/* Functional, not role-based — system error state only (6.58:1 on bg) */
+	--color-error: #ff6b6b;
+
+	/* ---- Type: 3 roles ----
+	   Display (Fraunces, serif) — headline/heading voice, weight 560-600,
+	   line-height 1.05-1.2, letter-spacing -0.01em at large sizes.
+	   Body (Inter, sans) — reading text, weight 400-500, line-height 1.6.
+	   Utility (JetBrains Mono) — labels, eyebrows, nav brand, code, status
+	   pills, weight 400-600, often uppercase with +0.08-0.12em tracking. */
+	--font-display: 'Fraunces', 'Iowan Old Style', 'Georgia', serif;
 	--font-base: 'Inter', system-ui, -apple-system, sans-serif;
 	--font-mono: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
 
@@ -53,7 +93,7 @@
 	--radius-sm: 0.25rem;
 	--radius-lg: 0.75rem;
 
-	--focus-ring: 0 0 0 3px rgba(255, 122, 51, 0.4);
+	--focus-ring: 0 0 0 3px rgba(255, 138, 76, 0.45);
 }
 
 *,
@@ -91,9 +131,9 @@ h2,
 h3,
 h4 {
 	font-family: var(--font-display);
+	font-weight: 560;
 	color: var(--color-heading);
 	line-height: 1.15;
-	font-weight: 600;
 }
 
 a {
@@ -133,8 +173,8 @@ button {
 	position: absolute;
 	top: -100%;
 	left: var(--space-4);
-	background: var(--color-accent);
-	color: #14100a;
+	background: var(--color-action);
+	color: #1a1206;
 	padding: var(--space-2) var(--space-4);
 	border-radius: var(--radius-sm);
 	font-weight: 600;
@@ -168,8 +208,8 @@ button {
 }
 
 .btn--primary {
-	background: var(--color-accent);
-	color: #14100a;
+	background: var(--color-action);
+	color: #1a1206;
 }
 
 .btn--secondary {
@@ -198,4 +238,15 @@ button {
 code,
 pre {
 	font-family: var(--font-mono);
+}
+
+/* Shared eyebrow/label style — the agents' voice: small, mono, tracked out */
+.eyebrow {
+	display: inline-block;
+	font-family: var(--font-mono);
+	font-size: var(--text-xs);
+	font-weight: 500;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-text-muted);
 }
