@@ -60,7 +60,17 @@ export default function DocsPageActions({ markdown, pageUrl }: DocsPageActionsPr
 
 	return (
 		<div className="docs-actions">
-			<button type="button" className="docs-actions__button" onClick={handleCopy}>
+			<button
+				type="button"
+				className={`docs-actions__button${
+					copyState === 'copied'
+						? ' docs-actions__button--success'
+						: copyState === 'error'
+							? ' docs-actions__button--error'
+							: ''
+				}`}
+				onClick={handleCopy}
+			>
 				{copyState === 'copied' ? 'Copied!' : copyState === 'error' ? 'Copy failed' : 'Copy Markdown'}
 			</button>
 

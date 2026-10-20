@@ -58,7 +58,7 @@ const roleClass: Record<string, string> = {
 	}
 
 	.roster-card {
-		--role-color: var(--color-accent);
+		--role-color: var(--color-action);
 		border: 1px solid var(--color-border);
 		border-top: 3px solid var(--role-color);
 		border-radius: var(--radius);
@@ -66,12 +66,13 @@ const roleClass: Record<string, string> = {
 		padding: var(--space-6);
 		transition:
 			transform 0.15s ease,
-			border-color 0.15s ease;
+			box-shadow 0.15s ease;
 	}
 
 	@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
 		.roster-card:hover {
 			transform: translateY(-3px);
+			box-shadow: 0 0 0 1px var(--role-color);
 		}
 	}
 
@@ -103,6 +104,7 @@ const roleClass: Record<string, string> = {
 	}
 
 	.roster-card__role {
+		font-family: var(--font-mono);
 		font-size: var(--text-xs);
 		color: var(--color-text-muted);
 		margin-bottom: var(--space-4);
