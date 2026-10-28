@@ -18,6 +18,9 @@ const {
 
 const base = import.meta.env.BASE_URL;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Social crawlers need an absolute URL; Astro.site is https://agistra.dev.
+const ogImageURL = new URL(`${base}og-image.png`, Astro.site);
+const ogImageAlt = 'Agistra logo';
 
 const navLinks = [
 	{ href: `${base}docs/`, label: 'Docs' },
@@ -54,9 +57,16 @@ const isHome = Astro.url.pathname === base;
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalURL} />
-		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:image" content={ogImageURL} />
+		<meta property="og:image:alt" content={ogImageAlt} />
+		<meta property="og:image:width" content="630" />
+		<meta property="og:image:height" content="630" />
+		<!-- Square image: summary_large_image would crop it, so use summary. -->
+		<meta name="twitter:card" content="summary" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageURL} />
+		<meta name="twitter:image:alt" content={ogImageAlt} />
 	</head>
 	<body>
 		<a href="#main" class="skip-link">Skip to main content</a>
