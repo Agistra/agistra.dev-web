@@ -3,58 +3,155 @@
 
    Brand: agistra.dev is a free, open-source multi-agent hub — a human "Team
    Lead" directs four AI agents (Architect, Builder, Tester, Router) through a
-   real ticket lifecycle. The palette makes that lifecycle visible: instead of
-   one accent color decorating a near-black page, the four agents' own real
-   role colors (already used on the roster cards) are elevated into the
-   site's primary accent system, each one reused for the UI function it fits
-   semantically — Architect (violet) for structural/external references,
-   Builder (amber) for primary actions, Tester (green) for verification and
-   proof, Router (blue) for navigation. Display type is a serif (Fraunces,
-   the human Team Lead's authored voice) paired with a monospace utility face
-   (JetBrains Mono, the agents' systematic voice — labels, status, code) and
-   a quiet sans body face (Inter) for reading text.
+   real ticket lifecycle. The palette is sampled from the brand banner (deep
+   navy ground, electric blue, orange, purple and green) and has two themes:
+   dark (the default) and light. Blue is the single brand accent (nav brand,
+   hero glow). The four agents keep their banner helmet colours — Architect
+   blue, Builder orange, Tester purple, Router green — and those are the
+   role colours used wherever an agent is named. Display type is a serif
+   (Fraunces, the human Team Lead's authored voice) paired with a monospace
+   utility face (JetBrains Mono, the agents' systematic voice — labels,
+   status, code) and a quiet sans body face (Inter) for reading text.
 
-   See the PR description for the full DESIGN.md-shaped plan (color table,
-   full type scale, layout concept, signature element).
+   Themes: dark values live on :root. Light values apply when the OS prefers
+   light and the visitor has not picked dark, and again when the visitor
+   picks light (data-theme="light" on <html>, set by the nav toggle and the
+   inline head script in Layout.astro). Decision record: ADR-001.
+
+   Role colours come in two sets. The bright set (dark theme) and the darker
+   set (light theme) are each at least 4.5:1 against their theme's --color-bg
+   and --color-surface. The brighter orange #ff8a1f stays for fills and glows
+   in both themes (--color-action), never as text on the light theme.
    ========================================================================== */
 
 :root {
-	/* ---- Color: Terminal Ink + 4 role hues (no single accent) ---- */
+	color-scheme: dark;
 
-	/* Base — a warm-tinted dark ink, not literal near-black graphite */
-	--color-bg: #17131f;
-	--color-surface: #211c2c;
-	--color-surface-raised: #2a2338;
-	--color-border: rgba(244, 238, 250, 0.1);
+	/* ---- Color: dark theme (default) ---- */
 
-	/* Text — warm paper foreground, not cool grey */
-	--color-text: #f2eee8;
-	--color-text-muted: #ada4bb;
-	--color-heading: #faf7f2;
+	/* Base — deep navy sampled from the banner */
+	--color-bg: #070c1f;
+	--color-surface: #0e1630;
+	--color-surface-raised: #152044;
+	--color-border: rgba(150, 180, 255, 0.16);
+	--color-header-bg: rgba(7, 12, 31, 0.85);
 
-	/* The four agent role colors — the site's real accent system.
-	   Contrast on --color-bg (#17131f), verified via WCAG relative-luminance
-	   formula: architect 7.18:1, builder 7.82:1, tester 9.42:1, router
-	   6.71:1 — all exceed AA (4.5:1) for text/UI use. */
-	--role-architect: #b98cff;
-	--role-builder: #ff8a4c;
-	--role-tester: #4fd18c;
-	--role-router: #5b9dff;
+	/* Text */
+	--color-text: #e9eefa;
+	--color-text-muted: #9fb0d0;
+	--color-heading: #ffffff;
 
-	/* Semantic reuse of the four role colors for site-wide UI functions —
-	   deliberately not one bolted-on "brand color": each function borrows the
-	   agent whose job matches it. */
-	--color-action: var(--role-builder); /* Builder: "ship it" -> primary CTAs, focus ring */
-	--color-nav: var(--role-router); /* Router: "route it" -> nav brand, nav link hover */
-	--color-verify: var(--role-tester); /* Tester: "verify it" -> proof/footnote accents */
-	--color-structure: var(--role-architect); /* Architect: "design it" -> external links, rules */
+	/* Brand accent: nav brand and hero glow (decoupled from the role colours) */
+	--color-brand: #4d9bff;
+	--color-glow: rgba(77, 155, 255, 0.16);
+
+	/* The four agent role colors, following the banner helmets */
+	--role-architect: #4d9bff;
+	--role-builder: #ff9a3d;
+	--role-tester: #a678ff;
+	--role-router: #3fd68f;
+
+	/* Primary action fill and its text (same in both themes) */
+	--color-action: #ff8a1f;
+	--color-action-text: #1a0e00;
+	--color-accent-dim: rgba(255, 138, 31, 0.16);
+
+	/* Functional, not role-based — system error state only */
+	--color-error: #ff6b6b;
+
+	--focus-ring: 0 0 0 3px rgba(255, 138, 31, 0.55);
+
+	/* Theme toggle icon: moon on dark, sun on light */
+	--icon-sun-display: none;
+	--icon-moon-display: block;
+}
+
+@media (prefers-color-scheme: light) {
+	:root:not([data-theme='dark']) {
+		color-scheme: light;
+
+		--color-bg: #f4f7fd;
+		--color-surface: #ffffff;
+		--color-surface-raised: #e9eef9;
+		--color-border: rgba(10, 25, 70, 0.14);
+		--color-header-bg: rgba(244, 247, 253, 0.85);
+
+		--color-text: #18213d;
+		--color-text-muted: #4a5878;
+		--color-heading: #0a1128;
+
+		--color-brand: #1456c9;
+		--color-glow: rgba(20, 86, 201, 0.14);
+
+		--role-architect: #1456c9;
+		--role-builder: #a84e08;
+		--role-tester: #6a35d6;
+		--role-router: #0b7545;
+
+		--color-accent-dim: rgba(255, 138, 31, 0.22);
+		--color-error: #c62828;
+
+		--focus-ring: 0 0 0 3px rgba(168, 78, 8, 0.55);
+
+		--icon-sun-display: block;
+		--icon-moon-display: none;
+	}
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
+
+	--color-bg: #f4f7fd;
+	--color-surface: #ffffff;
+	--color-surface-raised: #e9eef9;
+	--color-border: rgba(10, 25, 70, 0.14);
+	--color-header-bg: rgba(244, 247, 253, 0.85);
+
+	--color-text: #18213d;
+	--color-text-muted: #4a5878;
+	--color-heading: #0a1128;
+
+	--color-brand: #1456c9;
+	--color-glow: rgba(20, 86, 201, 0.14);
+
+	--role-architect: #1456c9;
+	--role-builder: #a84e08;
+	--role-tester: #6a35d6;
+	--role-router: #0b7545;
+
+	--color-accent-dim: rgba(255, 138, 31, 0.22);
+	--color-error: #c62828;
+
+	--focus-ring: 0 0 0 3px rgba(168, 78, 8, 0.55);
+
+	--icon-sun-display: block;
+	--icon-moon-display: none;
+}
+
+:root {
+	/* Semantic aliases. Nav and glow use the brand blue; structure, verify
+	   and role-specific uses follow the agent colours. */
+	--color-nav: var(--color-brand); /* nav brand, link hover */
+	--color-verify: var(--role-tester); /* Tester: proof/footnote accents */
+	--color-structure: var(--role-architect); /* Architect: external links, eyebrow */
 
 	/* Kept as the generic accent alias for anything not yet role-mapped */
 	--color-accent: var(--color-action);
-	--color-accent-dim: rgba(255, 138, 76, 0.16);
 
-	/* Functional, not role-based — system error state only (6.58:1 on bg) */
-	--color-error: #ff6b6b;
+	/* Syntax highlighting: Astro's built-in "css-variables" Shiki theme (see
+	   astro.config.mjs). Every token reuses a theme token, so both themes get
+	   AA-contrast code colours with no extra palette. */
+	--astro-code-color-text: var(--color-text);
+	--astro-code-color-background: var(--color-surface);
+	--astro-code-token-constant: var(--role-architect);
+	--astro-code-token-string: var(--role-router);
+	--astro-code-token-comment: var(--color-text-muted);
+	--astro-code-token-keyword: var(--role-builder);
+	--astro-code-token-parameter: var(--color-text);
+	--astro-code-token-function: var(--role-tester);
+	--astro-code-token-string-expression: var(--role-router);
+	--astro-code-token-punctuation: var(--color-text-muted);
+	--astro-code-token-link: var(--role-architect);
 
 	/* ---- Type: 3 roles ----
 	   Display (Fraunces, serif) — headline/heading voice, weight 560-600,
@@ -92,8 +189,6 @@
 	--radius: 0.375rem;
 	--radius-sm: 0.25rem;
 	--radius-lg: 0.75rem;
-
-	--focus-ring: 0 0 0 3px rgba(255, 138, 76, 0.45);
 }
 
 *,
@@ -174,7 +269,7 @@ button {
 	top: -100%;
 	left: var(--space-4);
 	background: var(--color-action);
-	color: #1a1206;
+	color: var(--color-action-text);
 	padding: var(--space-2) var(--space-4);
 	border-radius: var(--radius-sm);
 	font-weight: 600;
@@ -209,7 +304,7 @@ button {
 
 .btn--primary {
 	background: var(--color-action);
-	color: #1a1206;
+	color: var(--color-action-text);
 }
 
 .btn--secondary {

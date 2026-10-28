@@ -90,7 +90,7 @@ const agentNames = ['Architect', 'Builder', 'Tester', 'Router'];
 		inset: -20% -15%;
 		background: radial-gradient(
 			ellipse 55% 45% at 20% 20%,
-			rgba(185, 140, 255, 0.14),
+			var(--color-glow),
 			transparent 70%
 		);
 		z-index: -1;
@@ -170,7 +170,7 @@ const agentNames = ['Architect', 'Builder', 'Tester', 'Router'];
 
 	.hero__install-line::before {
 		content: '$ ';
-		color: var(--color-action);
+		color: var(--role-builder);
 	}
 
 	.hero__ctas {

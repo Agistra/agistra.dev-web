@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { SITE } from '../data/site';
 import NavToggle from '../components/NavToggle';
 import Footer from '../components/Footer.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 export interface Props {
 	title?: string;
@@ -46,6 +47,13 @@ const isHome = Astro.url.pathname === base;
 			rel="stylesheet"
 		/>
 		<link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+		<!-- Apply a saved theme before first paint (no flash). Must stay synchronous and inline. -->
+		<script is:inline>
+			try {
+				var t = localStorage.getItem('agistra-theme');
+				if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+			} catch (e) {}
+		</script>
 		<meta name="generator" content={Astro.generator} />
 
 		<title>{title}</title>
@@ -76,7 +84,10 @@ const isHome = Astro.url.pathname === base;
 				<a href={base} class="nav__brand" aria-label="agistra.dev — home">
 					agistra<span class="nav__brand-dim">.</span>dev
 				</a>
-				<NavToggle client:load links={navLinks} />
+				<div class="nav__right">
+					<ThemeToggle />
+					<NavToggle client:load links={navLinks} />
+				</div>
 			</nav>
 		</header>
 
@@ -105,7 +116,7 @@ const isHome = Astro.url.pathname === base;
 				position: sticky;
 				top: 0;
 				z-index: 50;
-				background: rgba(23, 19, 31, 0.85);
+				background: var(--color-header-bg);
 				border-bottom: 1px solid var(--color-border);
 				backdrop-filter: blur(8px);
 				-webkit-backdrop-filter: blur(8px);
@@ -133,6 +144,12 @@ const isHome = Astro.url.pathname === base;
 
 			.nav__brand:hover {
 				opacity: 0.85;
+			}
+
+			.nav__right {
+				display: flex;
+				align-items: center;
+				gap: var(--space-3);
 			}
 
 			:global(.nav-toggle-wrap) {
