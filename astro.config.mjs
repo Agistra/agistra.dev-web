@@ -12,4 +12,6 @@ export default defineConfig({
 	// The pinned integration version remains compatible with Astro 4.
 	integrations: [react(), sitemap(), mdx()],
 	output: 'static',
+	// "css-variables" lets the code-block colours follow the active theme (see global.css).
+	markdown: { shikiConfig: { theme: 'css-variables' } },
 });
