@@ -46,6 +46,13 @@ The static output will be generated in the `dist/` directory.
 npm run preview
 ```
 
+### Pageview counting (optional)
+
+The site can emit a [GoatCounter](https://www.goatcounter.com) pageview script — cookie-free,
+no localStorage, no personal data — on production builds only. It is off by default. To enable
+it, copy `.env.example` to `.env` and set `PUBLIC_GOATCOUNTER_CODE` to the site's GoatCounter
+code before running `npm run build`. Leaving it unset ships with no analytics script at all.
+
 ## Deployment
 
 Deployment is fully automated via GitHub Actions (`.github/workflows/deploy.yml`):

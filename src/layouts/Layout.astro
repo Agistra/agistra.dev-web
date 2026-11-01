@@ -23,6 +23,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(`${base}og-image.png`, Astro.site);
 const ogImageAlt = 'Agistra logo';
 
+// GoatCounter pageview counting (https://www.goatcounter.com) — cookie-free,
+// no localStorage, no fingerprinting. The site code is a config value, never
+// hard-coded here: until PUBLIC_GOATCOUNTER_CODE is set, no script is
+// emitted at all, in any environment. Even once set, it only loads on the
+// production build — dev and preview stay script-free.
+const goatcounterCode = import.meta.env.PUBLIC_GOATCOUNTER_CODE;
+const enableAnalytics = import.meta.env.PROD && Boolean(goatcounterCode);
+
 const navLinks = [
 	{ href: `${base}docs/`, label: 'Docs' },
 	{ href: SITE.github, label: 'GitHub', external: true },
@@ -75,6 +83,14 @@ const isHome = Astro.url.pathname === base;
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageURL} />
 		<meta name="twitter:image:alt" content={ogImageAlt} />
+		{enableAnalytics && (
+			<script
+				is:inline
+				data-goatcounter={`https://${goatcounterCode}.goatcounter.com/count`}
+				async
+				src="//gc.zgo.at/count.js"
+			></script>
+		)}
 	</head>
 	<body>
 		<a href="#main" class="skip-link">Skip to main content</a>
