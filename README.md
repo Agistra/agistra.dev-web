@@ -49,9 +49,10 @@ npm run preview
 ### Pageview counting (optional)
 
 The site can emit a [GoatCounter](https://www.goatcounter.com) pageview script — cookie-free,
-no localStorage, no personal data — on production builds only. It is off by default. To enable
-it, copy `.env.example` to `.env` and set `PUBLIC_GOATCOUNTER_CODE` to the site's GoatCounter
-code before running `npm run build`. Leaving it unset ships with no analytics script at all.
+no localStorage, no personal data — on production builds only. The production build on GitHub
+Pages gets `PUBLIC_GOATCOUNTER_CODE` from `.github/workflows/deploy.yml`, already set to the
+live site's code (`agistra-dev`). A local build stays script-free unless you copy `.env.example`
+to `.env` and set `PUBLIC_GOATCOUNTER_CODE` yourself before running `npm run build`.
 
 ## Deployment
 

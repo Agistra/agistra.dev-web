@@ -32,6 +32,8 @@ jobs:
 
       - name: Build site
         run: npm run build
+        env:
+          PUBLIC_GOATCOUNTER_CODE: agistra-dev
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
