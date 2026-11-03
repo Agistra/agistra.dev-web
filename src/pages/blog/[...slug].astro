@@ -1,0 +1,141 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	// Draft posts are excluded here, not just hidden from the index, so a
+	// draft slug 404s instead of being reachable by a direct URL guess.
+	const entries = await getCollection('blog', ({ data }) => !data.draft);
+	return entries.map((entry) => ({
+		params: { slug: entry.slug },
+		props: { entry },
+	}));
+}
+
+interface Props {
+	entry: CollectionEntry<'blog'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const base = import.meta.env.BASE_URL;
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+---
+
+<Layout
+	title={`${entry.data.title} — Blog — agistra.dev`}
+	description={entry.data.description}
+	image={entry.data.cover}
+>
+	<article class="container post">
+		<h1 class="post__title">{entry.data.title}</h1>
+		<p class="post__meta">
+			<span class="post__author">{entry.data.author}</span>
+			<span class="post__meta-sep" aria-hidden="true">·</span>
+			<time class="post__date" datetime={entry.data.date.toISOString()}>
+				{dateFormatter.format(entry.data.date)}
+			</time>
+		</p>
+		<div class="post__content">
+			<Content />
+		</div>
+
+		<!-- Fixed "Run it now" CTA — appended to every post, not a per-post
+		     frontmatter field, so it can never be forgotten on a post. -->
+		<aside class="post__cta">
+			<p class="post__cta-text">Want to see the hub run a ticket like this yourself?</p>
+			<a class="btn btn--primary" href={`${base}docs/quickstart/`}>Run it now</a>
+		</aside>
+	</article>
+
+	<style>
+		.post {
+			max-width: var(--content-width);
+			padding-block: var(--space-16);
+		}
+
+		.post__title {
+			font-size: var(--text-3xl);
+			margin-bottom: var(--space-3);
+		}
+
+		.post__meta {
+			color: var(--color-text-muted);
+			font-family: var(--font-mono);
+			font-size: var(--text-sm);
+			margin-bottom: var(--space-8);
+		}
+
+		.post__meta-sep {
+			margin-inline: var(--space-2);
+		}
+
+		.post__content {
+			color: var(--color-text);
+			line-height: 1.75;
+		}
+
+		.post__content :global(p) {
+			margin-bottom: var(--space-4);
+		}
+
+		.post__content :global(h2) {
+			font-size: var(--text-2xl);
+			margin-top: var(--space-12);
+			margin-bottom: var(--space-4);
+		}
+
+		.post__content :global(h2:first-child) {
+			margin-top: 0;
+		}
+
+		.post__content :global(ul) {
+			margin-bottom: var(--space-4);
+			padding-left: var(--space-6);
+		}
+
+		.post__content :global(pre) {
+			background: var(--color-surface);
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius);
+			padding: var(--space-4);
+			overflow-x: auto;
+			margin-bottom: var(--space-4);
+		}
+
+		.post__content :global(code) {
+			background: var(--color-surface);
+			padding: 0.1em 0.4em;
+			border-radius: var(--radius-sm);
+			font-size: 0.9em;
+		}
+
+		.post__content :global(pre code) {
+			background: none;
+			padding: 0;
+		}
+
+		.post__content :global(a) {
+			color: var(--color-nav);
+		}
+
+		.post__cta {
+			margin-top: var(--space-16);
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius);
+			padding: var(--space-6);
+			background: var(--color-surface);
+			text-align: center;
+		}
+
+		.post__cta-text {
+			color: var(--color-text);
+			margin-bottom: var(--space-4);
+		}
+	</style>
+</Layout>

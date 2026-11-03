@@ -14,4 +14,19 @@ const docs = defineCollection({
 	}),
 });
 
-export const collections = { docs };
+// `blog` collection: the canonical-original posts this site's X threads
+// (@AgistraHQ) link back to. Same `type: 'content'` + zod pattern as `docs`,
+// fulfilling the extension point noted above.
+const blog = defineCollection({
+	type: 'content',
+	schema: z.object({
+		title: z.string(),
+		description: z.string(),
+		date: z.coerce.date(),
+		author: z.string(),
+		cover: z.string().optional(),
+		draft: z.boolean().default(false),
+	}),
+});
+
+export const collections = { docs, blog };

@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL;
+const entries = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+---
+
+<Layout
+	title="Blog — agistra.dev"
+	description="Notes from the Agistra team on building and running a free, open-source multi-agent hub."
+>
+	<section class="container blog">
+		<h1 class="blog__heading">Blog</h1>
+		<p class="blog__intro">
+			Notes on building and running the hub. Each post here is the canonical original.
+		</p>
+
+		{
+			entries.length === 0 ? (
+				<p class="blog__empty">No posts published yet — check back soon.</p>
+			) : (
+				<ul class="blog__list">
+					{entries.map((entry) => (
+						<li class="blog__item">
+							<a class="blog__link" href={`${base}blog/${entry.slug}/`}>
+								{entry.data.title}
+							</a>
+							<p class="blog__desc">{entry.data.description}</p>
+							<time class="blog__date" datetime={entry.data.date.toISOString()}>
+								{dateFormatter.format(entry.data.date)}
+							</time>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+
+	<style>
+		.blog {
+			max-width: var(--content-width);
+			padding-block: var(--space-16);
+		}
+
+		.blog__heading {
+			font-size: var(--text-4xl);
+			margin-bottom: var(--space-3);
+		}
+
+		.blog__intro {
+			color: var(--color-text-muted);
+			margin-bottom: var(--space-8);
+		}
+
+		.blog__empty {
+			color: var(--color-text-muted);
+			font-family: var(--font-mono);
+		}
+
+		.blog__list {
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			gap: var(--space-6);
+		}
+
+		.blog__item {
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius);
+			padding: var(--space-6);
+			background: var(--color-surface);
+		}
+
+		.blog__link {
+			font-family: var(--font-display);
+			font-weight: 600;
+			font-size: var(--text-lg);
+			color: var(--color-heading);
+			text-decoration: none;
+		}
+
+		.blog__link:hover {
+			color: var(--color-nav);
+		}
+
+		.blog__desc {
+			color: var(--color-text-muted);
+			font-size: var(--text-sm);
+			margin-top: var(--space-2);
+		}
+
+		.blog__date {
+			display: block;
+			color: var(--color-text-muted);
+			font-family: var(--font-mono);
+			font-size: var(--text-xs);
+			margin-top: var(--space-3);
+		}
+	</style>
+</Layout>
