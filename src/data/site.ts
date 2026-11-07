@@ -4,9 +4,9 @@ export const SITE = {
 	description:
 		'A free, open-source multi-agent hub for Claude Code, Cursor, GitHub Copilot, and Codex. Architect, Builder, Tester, and Router run your ticket lifecycle so context survives between sessions.',
 	url: 'https://agistra.github.io/agistra.dev-web/',
-	github: 'https://github.com/vsetchinfc/agistra.dev',
+	github: 'https://github.com/Agistra/agistra.dev',
 	installCommand: [
-		'git clone https://github.com/vsetchinfc/agistra.dev.git my-hub',
+		'git clone https://github.com/Agistra/agistra.dev.git my-hub',
 		'cd my-hub',
 	],
 } as const;
