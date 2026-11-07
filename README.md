@@ -1,6 +1,6 @@
 # agistra.dev-web
 
-The public marketing site for [Agistra](https://github.com/vsetchinfc/agistra.dev) — a free,
+The public marketing site for [Agistra](https://github.com/Agistra/agistra.dev) — a free,
 open-source multi-agent hub for Claude Code, Cursor, GitHub Copilot, and Codex.
 
 ## Tech Stack
