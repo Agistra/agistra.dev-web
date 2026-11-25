@@ -38,6 +38,7 @@ const goatcounterCode = import.meta.env.PUBLIC_GOATCOUNTER_CODE;
 const enableAnalytics = import.meta.env.PROD && Boolean(goatcounterCode);
 
 const navLinks = [
+	{ href: `${base}install/`, label: 'Install' },
 	{ href: `${base}docs/`, label: 'Docs' },
 	{ href: `${base}blog/`, label: 'Blog' },
 	{ href: SITE.github, label: 'GitHub', external: true },

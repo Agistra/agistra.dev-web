@@ -1,0 +1,3 @@
+Install the Agistra hub for me. Read this link and follow it exactly:
+https://raw.githubusercontent.com/Agistra/agistra.dev/main/docs/AI-INSTALL.md
+Ask me before you install anything or leave the folder we chose. Never ask me to paste a secret into the chat.

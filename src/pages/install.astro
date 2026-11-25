@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+import InstallPrompt from '../components/InstallPrompt';
+import { SITE } from '../data/site';
+import { INSTALL_DOC_URL } from '../data/install-prompt.mjs';
+
+const steps = [
+	'Ask where the hub goes, and use an empty folder.',
+	'Check the prerequisites and ask before it installs anything.',
+	'Download the latest release from Agistra’s GitHub.',
+	'Check the checksum, and stop if it does not match.',
+	'Unpack the hub and write a handover file.',
+	'Tell you to start your agent in the hub folder and say “Hi Architect”.',
+];
+---
+
+<Layout
+	title="Install with your AI — agistra.dev"
+	description="Paste one prompt into Claude Code and it installs the Agistra hub for you: it checks your tools, downloads and verifies the latest release, and unpacks it."
+>
+	<section class="container install">
+		<p class="eyebrow install__eyebrow">Free · No login</p>
+		<h1 class="install__heading">Install with your AI</h1>
+		<p class="install__intro">
+			Start Claude Code in an empty folder, paste this prompt, and answer its questions. The agent does the rest.
+		</p>
+
+		<InstallPrompt client:load />
+
+		<p class="install__warn">Take the install prompt only from agistra.dev or agistra.ai.</p>
+		<p class="install__note">Claude Code first; Codex steps are not yet tested.</p>
+
+		<h2>What the agent will do</h2>
+		<ol class="install__list">
+			{steps.map((step) => <li>{step}</li>)}
+		</ol>
+		<p>
+			The one thing you type is your answers to its questions. You never paste a secret into the chat.
+		</p>
+
+		<h2>What you need</h2>
+		<ul class="install__list">
+			<li>Claude Code</li>
+			<li>Node.js 22 or newer</li>
+			<li>Git for Windows, on Windows</li>
+		</ul>
+
+		<h2>Read it first</h2>
+		<ul class="install__list">
+			<li>
+				<a href={INSTALL_DOC_URL} target="_blank" rel="noopener noreferrer">The install document the agent follows</a>
+			</li>
+			<li>
+				<a href={SITE.github} target="_blank" rel="noopener noreferrer">Install it yourself, by hand (public repo)</a>
+			</li>
+		</ul>
+	</section>
+
+	<style>
+		.install {
+			max-width: var(--content-width);
+			padding-block: var(--space-16);
+		}
+		.install__eyebrow {
+			color: var(--color-structure);
+			margin-bottom: var(--space-4);
+		}
+		.install__heading {
+			font-size: var(--text-4xl);
+			margin-bottom: var(--space-3);
+		}
+		.install__intro {
+			color: var(--color-text-muted);
+			margin-bottom: var(--space-8);
+		}
+		.install__warn {
+			margin-top: var(--space-4);
+			font-weight: 600;
+		}
+		.install__note {
+			color: var(--color-text-muted);
+			margin-bottom: var(--space-8);
+		}
+		.install h2 {
+			font-size: var(--text-2xl);
+			margin: var(--space-8) 0 var(--space-3);
+		}
+		.install__list {
+			padding-left: var(--space-6);
+			margin-bottom: var(--space-4);
+		}
+		.install__list li {
+			margin-bottom: var(--space-2);
+		}
+		.install a {
+			color: var(--color-nav);
+			text-underline-offset: 3px;
+		}
+	</style>
+</Layout>
+
+<style is:global>
+	.install-prompt {
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		overflow: hidden;
+	}
+	.install-prompt__bar {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+		padding: var(--space-2) var(--space-4);
+		background: var(--color-surface-raised);
+		border-bottom: 1px solid var(--color-border);
+	}
+	.install-prompt__label {
+		margin-right: auto;
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		color: var(--color-text-muted);
+	}
+	.install-prompt__copy {
+		min-height: 44px;
+		padding: var(--space-2) var(--space-4);
+		font: inherit;
+		font-size: var(--text-sm);
+		font-weight: 600;
+		color: var(--color-action-text);
+		background: var(--color-action);
+		border: 1px solid transparent;
+		border-radius: var(--radius);
+		cursor: pointer;
+	}
+	.install-prompt__status {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+	}
+	.install-prompt__code {
+		padding: var(--space-4);
+		font-size: var(--text-sm);
+		line-height: 1.7;
+		color: var(--color-text);
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+	}
+</style>
